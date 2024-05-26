@@ -18,7 +18,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -31,9 +31,9 @@ bugfix export-logcsv -progressparentid
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
+.DESCRIPTION
  Present complex nested permissions and group memberships in a report that is easy to read
 Provide additional information about each account such as Name, Department, Title
 Multithreaded with caching for fast results
@@ -70,7 +70,7 @@ Behavior:
       - Their hierarchy of nested group memberships is not retrieved (for performance reasons).
 - Exports information about all accounts with access to a .csv file
 - Exports information about all accounts with access to a report generated as a .html file
-- Outputs an XML-formatted list of common misconfigurations for use in Paessler PRTG Network Monitor as a custom XML sensor 
+- Outputs an XML-formatted list of common misconfigurations for use in Paessler PRTG Network Monitor as a custom XML sensor
 
 #>
 param (
@@ -757,7 +757,7 @@ function ConvertFrom-IdentityReferenceResolved {
             try {
                 $DirectoryEntry = Search-Directory @SearchDirectoryParams @LoggingParams
             } catch {
-                $LogParams['Type'] = 'Warning' 
+                $LogParams['Type'] = 'Warning'
                 Write-LogMsg @LogParams -Text " # '$IdentityReference' could not be resolved against its directory: $($_.Exception.Message)"
                 $LogParams['Type'] = $DebugOutputStream
             }
@@ -806,7 +806,7 @@ function ConvertFrom-IdentityReferenceResolved {
             try {
                 $DirectoryEntry = Search-Directory @SearchDirectoryParams @LoggingParams
             } catch {
-                $LogParams['Type'] = 'Warning' 
+                $LogParams['Type'] = 'Warning'
                 Write-LogMsg @LogParams -Text " # '$IdentityReference' could not be resolved against its directory. Error: $($_.Exception.Message.Trim())"
                 $LogParams['Type'] = $DebugOutputStream
             }
@@ -837,7 +837,7 @@ function ConvertFrom-IdentityReferenceResolved {
                 try {
                     $UsersGroup = Get-DirectoryEntry @GetDirectoryEntryParams @LoggingParams
                 } catch {
-                    $LogParams['Type'] = 'Warning' 
+                    $LogParams['Type'] = 'Warning'
                     Write-LogMsg @LogParams -Text "Could not get '$($GetDirectoryEntryParams['DirectoryPath'])' using PSRemoting. Error: $_"
                     $LogParams['Type'] = $DebugOutputStream
                 }
@@ -874,7 +874,7 @@ function ConvertFrom-IdentityReferenceResolved {
                 try {
                     $DirectoryEntry = Get-DirectoryEntry @GetDirectoryEntryParams @LoggingParams
                 } catch {
-                    $LogParams['Type'] = 'Warning' 
+                    $LogParams['Type'] = 'Warning'
                     Write-LogMsg @LogParams -Text " # '$($GetDirectoryEntryParams['DirectoryPath'])' could not be resolved for '$IdentityReference'. Error: $($_.Exception.Message.Trim())"
                     $LogParams['Type'] = $DebugOutputStream
                 }
@@ -901,7 +901,7 @@ function ConvertFrom-IdentityReferenceResolved {
             }
             $PropertiesToAdd['ResolvedAccountName'] = "$DomainNetBIOS\$AccountName"
             if (-not $DirectoryEntry.SchemaClassName) {
-                $PropertiesToAdd['SchemaClassName'] = @($DirectoryEntry.Properties['objectClass'])[-1] 
+                $PropertiesToAdd['SchemaClassName'] = @($DirectoryEntry.Properties['objectClass'])[-1]
             }
             if ($NoGroupMembers -eq $false) {
                 if (
@@ -948,7 +948,7 @@ function ConvertFrom-IdentityReferenceResolved {
             $PropertiesToAdd['Members'] = $GroupMembers
             Write-LogMsg @LogParams -Text " # '$($DirectoryEntry.Path)' has $(($Members | Measure-Object).Count) members for '$IdentityReference'"
         } else {
-            $LogParams['Type'] = 'Warning' 
+            $LogParams['Type'] = 'Warning'
             Write-LogMsg @LogParams -Text " # '$IdentityReference' could not be matched to a DirectoryEntry"
             $LogParams['Type'] = $DebugOutputStream
         }
@@ -1070,23 +1070,23 @@ function ConvertTo-DistinguishedName {
             WhoAmI       = $WhoAmI
         }
         $ADS_NAME_INITTYPE_dict = @{
-            ADS_NAME_INITTYPE_DOMAIN = 1 
-            ADS_NAME_INITTYPE_SERVER = 2 
-            ADS_NAME_INITTYPE_GC     = 3 
+            ADS_NAME_INITTYPE_DOMAIN = 1
+            ADS_NAME_INITTYPE_SERVER = 2
+            ADS_NAME_INITTYPE_GC     = 3
         }
         $ADS_NAME_TYPE_dict = @{
-            ADS_NAME_TYPE_1779                    = 1 
-            ADS_NAME_TYPE_CANONICAL               = 2 
-            ADS_NAME_TYPE_NT4                     = 3 
-            ADS_NAME_TYPE_DISPLAY                 = 4 
-            ADS_NAME_TYPE_DOMAIN_SIMPLE           = 5 
-            ADS_NAME_TYPE_ENTERPRISE_SIMPLE       = 6 
-            ADS_NAME_TYPE_GUID                    = 7 
-            ADS_NAME_TYPE_UNKNOWN                 = 8 
-            ADS_NAME_TYPE_USER_PRINCIPAL_NAME     = 9 
-            ADS_NAME_TYPE_CANONICAL_EX            = 10 
-            ADS_NAME_TYPE_SERVICE_PRINCIPAL_NAME  = 11 
-            ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = 12 
+            ADS_NAME_TYPE_1779                    = 1
+            ADS_NAME_TYPE_CANONICAL               = 2
+            ADS_NAME_TYPE_NT4                     = 3
+            ADS_NAME_TYPE_DISPLAY                 = 4
+            ADS_NAME_TYPE_DOMAIN_SIMPLE           = 5
+            ADS_NAME_TYPE_ENTERPRISE_SIMPLE       = 6
+            ADS_NAME_TYPE_GUID                    = 7
+            ADS_NAME_TYPE_UNKNOWN                 = 8
+            ADS_NAME_TYPE_USER_PRINCIPAL_NAME     = 9
+            ADS_NAME_TYPE_CANONICAL_EX            = 10
+            ADS_NAME_TYPE_SERVICE_PRINCIPAL_NAME  = 11
+            ADS_NAME_TYPE_SID_OR_SID_HISTORY_NAME = 12
         }
         $ChosenInitType = $ADS_NAME_INITTYPE_dict[$InitType]
         $ChosenInputType = $ADS_NAME_TYPE_dict[$InputType]
@@ -1265,7 +1265,7 @@ function ConvertTo-DomainSidString {
     if ($DomainSid) {
         return $DomainSid
     } else {
-        $LogParams['Type'] = 'Warning' 
+        $LogParams['Type'] = 'Warning'
         Write-LogMsg @LogParams -Text " # LDAP Domain: '$DomainDnsName' has an invalid SID - $($_.Exception.Message)"
         $LogParams['Type'] = $DebugOutputStream
     }
@@ -1493,7 +1493,7 @@ function Expand-WinNTGroupMember {
     process {
         ForEach ($ThisEntry in $DirectoryEntry) {
             if (!($ThisEntry.Properties)) {
-                $LogParams['Type'] = 'Warning' 
+                $LogParams['Type'] = 'Warning'
                 Write-LogMsg @LogParams -Text "'$ThisEntry' has no properties"
                 $LogParams['Type'] = $DebugOutputStream
             } elseif ($ThisEntry.Properties['objectClass'] -contains 'group') {
@@ -2060,7 +2060,7 @@ function Get-DirectoryEntry {
         try {
             $null = $DirectoryEntry.RefreshCache($PropertiesToLoad)
         } catch {
-            $LogParams['Type'] = 'Warning' 
+            $LogParams['Type'] = 'Warning'
             Write-LogMsg @LogParams -Text "'$DirectoryPath' could not be retrieved. Error: $($_.Exception.Message.Trim() -replace '\s"',' "')"
             return
         }
@@ -2389,7 +2389,7 @@ function Resolve-IdentityReference {
         return [PSCustomObject]@{
             IdentityReference        = $IdentityReference
             SIDString                = $CacheResult.SID
-            IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\" 
+            IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\"
             IdentityReferenceDns     = "$($AdsiServer.Dns)\$($CacheResult.Name)"
         }
     } else {
@@ -2421,7 +2421,7 @@ function Resolve-IdentityReference {
             return [PSCustomObject]@{
                 IdentityReference        = $IdentityReference
                 SIDString                = $CacheResult.SID
-                IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\" 
+                IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\"
                 IdentityReferenceDns     = "$DomainDns\$($CacheResult.Name)"
             }
         } else {
@@ -2434,7 +2434,7 @@ function Resolve-IdentityReference {
         return [PSCustomObject]@{
             IdentityReference        = $IdentityReference
             SIDString                = $CacheResult.SID
-            IdentityReferenceNetBios = $CacheResult.Caption.Replace("$ThisHostname\", "$ThisHostname\") 
+            IdentityReferenceNetBios = $CacheResult.Caption.Replace("$ThisHostname\", "$ThisHostname\")
             IdentityReferenceDns     = "$($AdsiServer.Dns)\$($CacheResult.Name)"
         }
     } else {
@@ -2504,7 +2504,7 @@ function Resolve-IdentityReference {
                 $Resolved = [PSCustomObject]@{
                     IdentityReference        = $IdentityReference
                     SIDString                = $IdentityReference
-                    IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\" 
+                    IdentityReferenceNetBios = $CacheResult.Caption -replace "^$ThisHostname\\", "$ThisHostname\"
                     IdentityReferenceDns     = "$DomainDns\$IdentityReference"
                 }
             }
@@ -2551,7 +2551,7 @@ function Resolve-IdentityReference {
             }
         }
         "APPLICATION PACKAGE AUTHORITY\*" {
-            $KnownSIDs = @{ 
+            $KnownSIDs = @{
                 'APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES'                                                   = 'S-1-15-2-1'
                 'APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES'                                        = 'S-1-15-2-2'
                 'APPLICATION PACKAGE AUTHORITY\Your Internet connection'                                                   = 'S-1-15-3-1'
@@ -2655,7 +2655,7 @@ function Resolve-IdentityReference {
                 $DirectoryEntry = Search-Directory @SearchParams @LoggingParams
                 $SIDString = (Add-SidInfo -InputObject $DirectoryEntry -DomainsBySid $DomainsBySid @LoggingParams).SidString
             } catch {
-                $LogParams['Type'] = 'Warning' 
+                $LogParams['Type'] = 'Warning'
                 Write-LogMsg @LogParams -Text "'$IdentityReference' could not be resolved against its directory. Error: $($_.Exception.Message)"
                 $LogParams['Type'] = $DebugOutputStream
             }
@@ -2677,7 +2677,7 @@ function Resolve-IdentityReference {
         return [PSCustomObject]@{
             IdentityReference        = $IdentityReference
             SIDString                = $SIDString
-            IdentityReferenceNetBios = "$DomainNetBios\$Name" 
+            IdentityReferenceNetBios = "$DomainNetBios\$Name"
             IdentityReferenceDns     = "$DomainDns\$Name"
         }
     }
@@ -2787,7 +2787,7 @@ function ConvertTo-FileList {
             'Access lists',
             'Access rules (resolved identity references and inheritance flags)',
             'Accounts with access',
-            'Expanded access rules (expanded with account info)', 
+            'Expanded access rules (expanded with account info)',
             'Formatted permissions',
             'Best Practice issues',
             'Custom sensor output for Paessler PRTG Network Monitor'
@@ -3621,7 +3621,7 @@ function Get-HtmlReportElements {
     Write-LogMsg @LogParams -Text "New-BootstrapColumn -Html '`$ExcludedMembers`$ExcludedClasses',`$IgnoredDomains`$ExcludedNames"
     $ExclusionsDiv = New-BootstrapColumn -Html "$ExcludedMembers$ExcludedClasses", "$IgnoredDomains$ExcludedNames" -Width 6
     $HtmlListOfLogs = $LogFileList |
-    Split-Path -Leaf | 
+    Split-Path -Leaf |
     ConvertTo-HtmlList |
     ConvertTo-BootstrapListGroup
     $HtmlReportsHeading = New-HtmlHeading -Text 'Reports' -Level 6
@@ -3638,11 +3638,11 @@ function Get-HtmlReportElements {
         ItemCount        = $AclByPath.Keys.Count
         PermissionCount  = (
             @(
-                $Permission.AccountPermissions.Access.Access.Count, 
+                $Permission.AccountPermissions.Access.Access.Count,
                 $Permission.ItemPermissions.Access.Access.Count,
-                $Permission.TargetPermissions.NetworkPaths.Accounts.Access.Access.Count, 
-                ($Permission.TargetPermissions.NetworkPaths.Items.Access.Access.Count + $Permission.TargetPermissions.NetworkPaths.Access.Access.Count), 
-                $Permission.TargetPermissions.NetworkPaths.Access.Count, 
+                $Permission.TargetPermissions.NetworkPaths.Accounts.Access.Access.Count,
+                ($Permission.TargetPermissions.NetworkPaths.Items.Access.Access.Count + $Permission.TargetPermissions.NetworkPaths.Access.Access.Count),
+                $Permission.TargetPermissions.NetworkPaths.Access.Count,
                 $AceByGUID.Keys.Count
             ) |
             Measure-Object -Maximum
@@ -4153,7 +4153,7 @@ function Resolve-IdentityReferenceDomainDNS {
         }
         if (-not $KnownLocalDomains[$DomainNetBIOS]) {
             if ($DomainNetBIOS) {
-                $DomainDNS = $DomainsByNetbios[$DomainNetBIOS].Dns 
+                $DomainDNS = $DomainsByNetbios[$DomainNetBIOS].Dns
             }
             if (-not $DomainDNS) {
                 $ThisServerDn = ConvertTo-DistinguishedName -Domain $DomainNetBIOS -DomainsByNetbios $DomainsByNetbios @LoggingParams
@@ -4192,7 +4192,7 @@ function Resolve-SplitByParameter {
 function Select-AccountTableProperty {
     param (
         $InputObject,
-        [cultureinfo]$Culture = (Get-Culture), 
+        [cultureinfo]$Culture = (Get-Culture),
         [Hashtable]$ShortNameByID = [Hashtable]::Synchronized(@{})
     )
     ForEach ($Object in $InputObject) {
@@ -4213,7 +4213,7 @@ function Select-ItemTableProperty {
     param (
         $InputObject,
         [cultureinfo]$Culture = (Get-Culture),
-        [Hashtable]$ShortNameByID = [Hashtable]::Synchronized(@{}), 
+        [Hashtable]$ShortNameByID = [Hashtable]::Synchronized(@{}),
         [switch]$SkipFilterCheck
     )
     ForEach ($Object in $InputObject) {
@@ -4259,7 +4259,7 @@ function Select-PermissionTableProperty {
                                             $IncludeFilterContents[$Object.Account.ResolvedAccountName]
                                         )
                                     ) {
-                                        $GroupString = $ACE.IdentityReferenceResolved 
+                                        $GroupString = $ACE.IdentityReferenceResolved
                                     }
                                 }
                             }
@@ -4304,16 +4304,16 @@ function Select-PermissionTableProperty {
                                             $IncludeFilterContents[$AccountName]
                                         )
                                     ) {
-                                        $GroupString = $ACE.IdentityReferenceResolved 
+                                        $GroupString = $ACE.IdentityReferenceResolved
                                     }
                                 }
                             }
                             if ($null -ne $GroupString) {
                                 [pscustomobject]@{
                                     'Account'              = $AccountName
-                                    'Access'               = $ACE.Access 
+                                    'Access'               = $ACE.Access
                                     'Due to Membership In' = $GroupString
-                                    'Source of Access'     = $ACE.SourceOfAccess 
+                                    'Source of Access'     = $ACE.SourceOfAccess
                                     'Name'                 = $AceList.Account.Name
                                     'Department'           = $AceList.Account.Department
                                     'Title'                = $AceList.Account.Title
@@ -4343,7 +4343,7 @@ function Select-PermissionTableProperty {
                                         $IncludeFilterContents[$ACE.ResolvedAccountName]
                                     )
                                 ) {
-                                    $GroupString = $ACE.IdentityReferenceResolved 
+                                    $GroupString = $ACE.IdentityReferenceResolved
                                 }
                             }
                         }
@@ -4540,7 +4540,7 @@ function Expand-PermissionTarget {
                 Write-Progress @Progress -Status "$PercentComplete% (item $($i + 1) of $TargetCount))" -CurrentOperation "Get-Subfolder '$($ThisFolder)'" -PercentComplete $PercentComplete
                 $IntervalCounter = 0
             }
-            $i++ 
+            $i++
             Write-LogMsg @Log -Text "Get-Subfolder -TargetPath '$ThisFolder' -RecurseDepth $RecurseDepth"
             Get-Subfolder -TargetPath $ThisFolder @GetSubfolderParams
         }
@@ -4621,7 +4621,7 @@ function Find-ServerFqdn {
             [int]$PercentComplete = $i / $Count * 100
             Write-Progress @Progress -Status "$PercentComplete% (path $($i + 1) of $Count)" -CurrentOperation "Find-ServerNameInPath '$ThisPath'" -PercentComplete $PercentComplete
         }
-        $i++ 
+        $i++
         $UniqueValues[(Find-ServerNameInPath -LiteralPath $ThisPath -ThisFqdn $ThisFqdn)] = $null
     }
     Write-Progress @Progress -Completed
@@ -4802,7 +4802,7 @@ function Get-AccessControlList {
                     Write-Progress @GrandChildProgress -Status "$PercentComplete% (child $($ChildIndex + 1) of $ChildCount) Get-DirectorySecurity" -CurrentOperation $Child -PercentComplete $PercentComplete
                     $IntervalCounter = 0
                 }
-                $ChildIndex++ 
+                $ChildIndex++
                 Get-DirectorySecurity -LiteralPath $Child @GetDirectorySecurity
             }
             Write-Progress @GrandChildProgress -Completed
@@ -5065,8 +5065,8 @@ function Get-PermissionPrincipal {
         LogBuffer              = $LogBuffer
         CimCache               = $CimCache
         DebugOutputStream      = $DebugOutputStream
-        PrincipalsByResolvedID = $PrincipalsByResolvedID 
-        ACEsByResolvedID       = $ACEsByResolvedID 
+        PrincipalsByResolvedID = $PrincipalsByResolvedID
+        ACEsByResolvedID       = $ACEsByResolvedID
         CurrentDomain          = $CurrentDomain
     }
     if ($ThreadCount -eq 1) {
@@ -5216,7 +5216,7 @@ function Initialize-Cache {
         ForEach ($ThisServerName in $Fqdn) {
             [int]$PercentComplete = $i / $Count * 100
             Write-Progress -Status "$PercentComplete% (FQDN $($i + 1) of $Count) Get-AdsiServer" -CurrentOperation "Get-AdsiServer '$ThisServerName'" -PercentComplete $PercentComplete @Progress
-            $i++ 
+            $i++
             Write-LogMsg @Log -Text "Get-AdsiServer -Fqdn '$ThisServerName'"
             $null = Get-AdsiServer -Fqdn $ThisServerName @GetAdsiServer
         }
@@ -5319,7 +5319,7 @@ function Out-PermissionReport {
         'Access lists',
         'Access rules (resolved identity references and inheritance flags)',
         'Accounts with access',
-        'Expanded access rules (expanded with account info)', 
+        'Expanded access rules (expanded with account info)',
         'Formatted permissions',
         'Best Practice issues',
         'Custom sensor output for Paessler PRTG Network Monitor',
@@ -5662,7 +5662,7 @@ function Resolve-AccessControlList {
                 Write-Progress @Progress -Status "$PercentComplete% (ACL $($i + 1) of $Count) Resolve-Acl" -CurrentOperation $ThisPath -PercentComplete $PercentComplete
                 $IntervalCounter = 0
             }
-            $i++ 
+            $i++
             Write-LogMsg @Log -Text "Resolve-Acl -InputObject '$ThisPath' -ACLsByPath `$ACLsByPath -ACEsByGUID `$ACEsByGUID"
             Resolve-Acl -ItemPath $ThisPath @ResolveAclParams
         }
@@ -6404,7 +6404,7 @@ function ConvertTo-DnsFqdn {
         WhoAmI       = $WhoAmI
     }
     Write-LogMsg @Log -Text "[System.Net.Dns]::GetHostByName('$ComputerName')"
-    [System.Net.Dns]::GetHostByName($ComputerName).HostName 
+    [System.Net.Dns]::GetHostByName($ComputerName).HostName
 }
 function Export-LogCsv {
     [OutputType([System.String])]
@@ -6513,7 +6513,7 @@ function Write-LogMsg {
                         }
                     }
                 } else {
-                    continue 
+                    continue
                 }
             }
             $Text = "$Text -$Key $Value"
@@ -6588,7 +6588,7 @@ function GetDirectories {
     catch {
         $WarningCache[$_.Exception.Message.Replace('Exception calling "GetDirectories" with "3" argument(s): ', '').Replace('"', '')] = $null
         if (-not $PSBoundParameters.ContainsKey('WarningCache')) {
-            $LogParams['Type'] = 'Warning' 
+            $LogParams['Type'] = 'Warning'
             ForEach ($Warning in $WarningCache.Keys) {
                 Write-LogMsg @LogParams -Text $_.Exception.Message.Replace('Exception calling "GetDirectories" with "3" argument(s): ', '').Replace('"', '')
             }
@@ -6610,9 +6610,9 @@ function GetDirectories {
     }
     if (-not $PSBoundParameters.ContainsKey('WarningCache')) {
         if ($WarningCache.Keys.Count -ge 1) {
-            $LogParams['Type'] = 'Warning' 
+            $LogParams['Type'] = 'Warning'
             Write-LogMsg @LogParams -Text "$($WarningCache.Keys.Count) errors while getting directories of '$TargetPath'.  See verbose log for details."
-            $LogParams['Type'] = 'Verbose' 
+            $LogParams['Type'] = 'Verbose'
             ForEach ($Warning in $WarningCache.Keys) {
                 Write-LogMsg @LogParams -Text $Warning
             }
@@ -6832,7 +6832,7 @@ function Get-DirectorySecurity {
         )
     } 2>$null
     if ($null -eq $DirectorySecurity) {
-        $LogParams['Type'] = 'Warning' 
+        $LogParams['Type'] = 'Warning'
         Write-LogMsg @LogParams -Text "# Found no ACL for '$LiteralPath'"
         $LogParams['Type'] = $DebugOutputStream
         return
@@ -6896,7 +6896,7 @@ function Get-OwnerAce {
     )
     $InheritanceFlags = [System.Security.AccessControl.InheritanceFlags]::ContainerInherit -bor [System.Security.AccessControl.InheritanceFlags]::ObjectInherit
     $SourceAccessList = $ACLsByPath[$Item]
-    $ThisParent = $Item.Substring(0, [math]::Max($Item.LastIndexOf('\'), 0)) 
+    $ThisParent = $Item.Substring(0, [math]::Max($Item.LastIndexOf('\'), 0))
     $ParentOwner = $ACLsByPath[$ThisParent].Owner
     if (
         $SourceAccessList.Owner -ne $ParentOwner -and
@@ -7025,7 +7025,7 @@ function New-NtfsAclIssueReport {
     $UserACEs = $UserPermissions.Group |
     Where-Object -FilterScript {
         $_.ObjectType -contains 'User' -and
-        $_.ACEIdentityReference -ne 'S-1-5-18' 
+        $_.ACEIdentityReference -ne 'S-1-5-18'
     } |
     ForEach-Object { "$($_.User) on '$($_.SourceAclPath)'" } |
     Sort-Object -Unique
@@ -7085,7 +7085,7 @@ function Add-PsCommand {
     )
     begin {
         $LogParams = @{
-            LogBuffer  = $LogBuffer
+            Buffer  = $LogBuffer
             ThisHostname = $TodaysHostname
             Type         = $DebugOutputStream
             WhoAmI       = $WhoAmI
@@ -7153,7 +7153,7 @@ function Add-PsModule {
     )
     begin {
         $LogParams = @{
-            LogBuffer  = $LogBuffer
+            Buffer  = $LogBuffer
             ThisHostname = $TodaysHostname
             Type         = $DebugOutputStream
             WhoAmI       = $WhoAmI
@@ -7261,7 +7261,7 @@ function Expand-PsCommandInfo {
     ForEach ($ThisCommandToken in $CommandTokens) {
         if (
             -not $Cache[$ThisCommandToken.Value] -and
-            $ThisCommandToken.Value -notmatch '[\.\\]' 
+            $ThisCommandToken.Value -notmatch '[\.\\]'
         ) {
             $TokenCommandInfo = Get-PsCommandInfo @CommandInfoParams -Command $ThisCommandToken.Value
             $Cache[$ThisCommandToken.Value] = $TokenCommandInfo
@@ -7300,7 +7300,7 @@ function Get-PsCommandInfo {
         [hashtable]$LogBuffer = $Global:LogMessages
     )
     $LogParams = @{
-        LogBuffer  = $LogBuffer
+        Buffer  = $LogBuffer
         ThisHostname = $TodaysHostname
         Type         = $DebugOutputStream
         WhoAmI       = $WhoAmI
@@ -7369,7 +7369,7 @@ function Open-Thread {
             $Progress['Id'] = 0
         }
         $LogParams = @{
-            LogBuffer  = $LogBuffer
+            Buffer  = $LogBuffer
             ThisHostname = $TodaysHostname
             Type         = $DebugOutputStream
             WhoAmI       = $WhoAmI
@@ -7437,7 +7437,7 @@ function Open-Thread {
             Write-LogMsg @LogParams -Text "`$PowershellInterface.Commands.Clear() # for '$Command' on '$ObjectString'"
             $null = $PowershellInterface.Commands.Clear()
             if ($ScriptBlock) {
-                $null = Add-PsCommand @CommandInfoParams -Command $ScriptBlock -PowershellInterface $PowershellInterface 
+                $null = Add-PsCommand @CommandInfoParams -Command $ScriptBlock -PowershellInterface $PowershellInterface
                 If ([string]::IsNullOrEmpty($InputParameter)) {
                     $InputParameter = 'PsRunspaceArgument1'
                 }
@@ -7515,7 +7515,7 @@ function Split-Thread {
     )
     begin {
         $LogParams = @{
-            LogBuffer    = $LogBuffer
+            Buffer    = $LogBuffer
             ThisHostname = $TodaysHostname
             Type         = $DebugOutputStream
             WhoAmI       = $WhoAmI
@@ -7646,7 +7646,7 @@ function Wait-Thread {
     )
     begin {
         $LogParams = @{
-            LogBuffer  = $LogBuffer
+            Buffer  = $LogBuffer
             ThisHostname = $TodaysHostname
             Type         = $DebugOutputStream
             WhoAmI       = $WhoAmI
@@ -7870,13 +7870,13 @@ function Send-PrtgXmlSensorOutput {
     $DomainsBySID = [hashtable]::Synchronized(@{})
     $DomainsByNetbios = [hashtable]::Synchronized(@{})
     $DomainsByFqdn = [hashtable]::Synchronized(@{})
-    $LogBuffer = [hashtable]::Synchronized(@{}) 
-    $CimCache = [hashtable]::Synchronized(@{}) 
-    $AclByPath = [hashtable]::Synchronized(@{}) 
-    $AceByGUID = [hashtable]::Synchronized(@{}) 
-    $AceGuidByID = [hashtable]::Synchronized(@{}) 
-    $AceGuidByPath = [hashtable]::Synchronized(@{}) 
-    $PrincipalByID = [hashtable]::Synchronized(@{}) 
+    $LogBuffer = [hashtable]::Synchronized(@{})
+    $CimCache = [hashtable]::Synchronized(@{})
+    $AclByPath = [hashtable]::Synchronized(@{})
+    $AceByGUID = [hashtable]::Synchronized(@{})
+    $AceGuidByID = [hashtable]::Synchronized(@{})
+    $AceGuidByPath = [hashtable]::Synchronized(@{})
+    $PrincipalByID = [hashtable]::Synchronized(@{})
     $Parents = [hashtable]::Synchronized(@{})
     $IdByShortName = [hashtable]::Synchronized(@{})
     $ShortNameByID = [hashtable]::Synchronized(@{})
